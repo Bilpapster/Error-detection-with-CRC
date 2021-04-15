@@ -18,43 +18,41 @@ public class Message {
         if (!p.startsWith("1")) return false;
         if (!p.endsWith("1")) return false;
 
+        this.bitSeries.appendZeros(numberOfFcsBits);
+        BitSeries frameCheckSequence = calculateModulo2Division(p);
 
-        StringBuilder currentNumber = new StringBuilder();
-        int currentBitSeriesIndex = 0;
-        for (int i = 0; i < numberOfFcsBits; i++) {
-//            currentNumber.append(bitSeries.charAt(currentBitSeriesIndex++));
-            bitSeries.append('0');
-        }
+        this.bitSeries.addWithoutBorrow(frameCheckSequence.setSeriesSize(numberOfFcsBits).toString());
 
-//        while (currentBitSeriesIndex < bitSeries.length()) {
-//            if ()
-
-
-//            currentNumber.append(bitSeries.charAt(currentBitSeriesIndex++));
-//        }
-
-
-//        System.out.println("Initial message: " + bitSeries);
-
-        int messageInDecimal = binaryToDecimal(bitSeries.toString() + "00000");
-//        System.out.println("Message in decimal: " + messageInDecimal);
-
-        int pInDecimal = binaryToDecimal(p);
-//        System.out.println("P in decimal: " + pInDecimal);
-
-
-        int modulo = messageInDecimal % pInDecimal;
-//        System.out.println("Modulo in decimal: " + modulo);
-
-//        System.out.println("Modulo in binary: " + decimalToBinary(modulo));
-
-
-        this.bitSeries.append(addLeadingZeros(decimalToBinary(modulo), numberOfFcsBits));
-//        System.out.println("Final message " + bitSeries);
-        return true;
+        System.out.println("Before transmission: " + bitSeries);
+        boolean flag = bitSeries.distort(0.01);
+        System.out.println("After  transmission: " + bitSeries + " " + flag);
+        return flag;
     }
 
+    public void receive(String p) {
+        BitSeries remainder = calculateModulo2Division(p);
+        System.out.println(remainder);
+        System.out.println(remainder.isZero());
+    }
 
+    public BitSeries calculateModulo2Division(String divisor) {
+        int seriesIndex = divisor.length(), numberOfFcsBits = divisor.length() - 1;
+        BitSeries currentWord = new BitSeries(bitSeries.subString(0, seriesIndex));
+
+        while (seriesIndex < this.bitSeries.getLength()) {
+            if (currentWord.startsWith('0')) {
+                currentWord.trimLeadingZeros();
+                int numberOfMissingBits = divisor.length() - currentWord.getLength();
+                for (int missingBit = 0; missingBit < numberOfMissingBits; missingBit++) {
+                    currentWord.append(bitSeries.charAt(seriesIndex++));
+                    if (seriesIndex >= bitSeries.getLength()) return currentWord;
+                }
+            }
+            currentWord.addWithoutBorrow(divisor);
+//            System.out.println(currentWord);
+        }
+        return currentWord;
+    }
 
     public int binaryToDecimal(String binaryNumber) {
         int decimalNumber = 0;
