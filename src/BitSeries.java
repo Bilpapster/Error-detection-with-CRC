@@ -2,7 +2,7 @@ public class BitSeries {
     private StringBuilder series;
 
     public BitSeries(int numberOfBits) {
-//        this.series = new StringBuilder("1");
+        this.series = new StringBuilder();
         for (int character = 0; character < numberOfBits; character++) {
             this.series.append(RandomEngineFactory.getEngine().nextBoolean() ? '1' : '0');
         }
@@ -36,17 +36,8 @@ public class BitSeries {
     }
 
     public BitSeries appendZeros(int numberOfZeros) {
-        for (int zero = 0; zero < numberOfZeros; zero++) this.series.append('0');
+        this.series.append("0".repeat(Math.max(0, numberOfZeros)));
         return this;
-    }
-
-    public boolean transmit(String p) {
-        int numberOfFcsBits = p.length() - 1;
-
-        if (!p.startsWith("1")) return false;
-        if (!p.endsWith("1")) return false;
-
-        return true;
     }
 
     public String subString(int start, int end) {
@@ -101,6 +92,10 @@ public class BitSeries {
 
     public BitSeries addWithoutBorrow(StringBuilder binaryNumber) {
         return addWithoutBorrow(binaryNumber.toString());
+    }
+
+    public BitSeries addWithoutBorrow(BitSeries bitSeries) {
+        return addWithoutBorrow(bitSeries.toString());
     }
 
     public boolean distort(double bitErrorRate) {
