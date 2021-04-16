@@ -1,49 +1,47 @@
 public class Message {
 
-    private final BitSeries bitSeries;
+    private final BitSequence bitSequence;
     private boolean errorDuringTransmission = false;
 
     public Message(String bitSeriesString) {
-        this.bitSeries = new BitSeries(bitSeriesString);
+        bitSequence = new BitSequence(bitSeriesString);
     }
 
     public Message(int numberOfBits) {
-        this.bitSeries = new BitSeries(numberOfBits);
+        bitSequence = new BitSequence(numberOfBits);
     }
 
     public boolean transmit(String divisor, double bitErrorRate) {
+        if (!checkCRCDivisorValidity(divisor)) return false;
 
         int numberOfFcsBits = divisor.length() - 1;
-        if (!divisor.startsWith("1")) return false;
-        if (!divisor.endsWith("1")) return false;
-
-        this.bitSeries.appendZeros(numberOfFcsBits);
-        BitSeries frameCheckSequence = calculateModulo2Division(divisor);
-
-        this.bitSeries.addWithoutBorrow(frameCheckSequence.setSeriesSize(numberOfFcsBits));
-
-        System.out.println("Before transmission: " + bitSeries);
-        errorDuringTransmission = bitSeries.distort(bitErrorRate);
+        bitSequence.appendZeros(numberOfFcsBits);
+        BitSequence frameCheckSequence = calculateModulo2Division(divisor);
+        bitSequence.addWithoutBorrow(frameCheckSequence.setSeriesSize(numberOfFcsBits));
+        errorDuringTransmission = bitSequence.distort(bitErrorRate);
         return true;
     }
 
-    public void receive(String divisor) {
-        BitSeries remainder = calculateModulo2Division(divisor);
-        System.out.println(remainder);
-        System.out.println(remainder.isZero());
+    private boolean checkCRCDivisorValidity(String divisor) {
+        if (!divisor.startsWith("1")) return false;
+        return divisor.endsWith("1");
     }
 
-    public BitSeries calculateModulo2Division(String divisor) {
-        int seriesIndex = divisor.length(), numberOfFcsBits = divisor.length() - 1;
-        BitSeries remainder = new BitSeries(bitSeries.subString(0, seriesIndex));
+    public boolean receive(String divisor) {
+        return calculateModulo2Division(divisor).isZero();
+    }
 
-        while (seriesIndex < this.bitSeries.getLength()) {
+    public BitSequence calculateModulo2Division(String divisor) {
+        int seriesIndex = divisor.length();
+        BitSequence remainder = new BitSequence(bitSequence.subString(0, seriesIndex));
+
+        while (seriesIndex < this.bitSequence.getLength()) {
             if (remainder.startsWith('0')) {
                 remainder.trimLeadingZeros();
                 int numberOfMissingBits = divisor.length() - remainder.getLength();
                 for (int missingBit = 0; missingBit < numberOfMissingBits; missingBit++) {
-                    remainder.append(bitSeries.charAt(seriesIndex++));
-                    if (seriesIndex >= bitSeries.getLength()) return remainder;
+                    remainder.append(bitSequence.charAt(seriesIndex++));
+                    if (seriesIndex >= bitSequence.getLength()) return remainder;
                 }
             }
             remainder.addWithoutBorrow(divisor);
@@ -51,9 +49,16 @@ public class Message {
         return remainder;
     }
 
-    @Override
-    public String toString() {
-        return bitSeries.toString() + ": " + ((errorDuringTransmission) ? "Distorted" : "Not distorted");
+    public String getSequenceString() {
+        return bitSequence.toString();
     }
 
+    public boolean hasError() {
+        return errorDuringTransmission;
+    }
+
+    @Override
+    public String toString() {
+        return bitSequence.toString() + ": " + ((errorDuringTransmission) ? "Distorted" : "Not distorted");
+    }
 }
