@@ -4,7 +4,25 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-public class StatisticsManager {
+/**
+ * A small class that represents a pretty simple  statistical analyzer
+ * in our system. The class contains a main method and can be executed
+ * independently from the rest system. Before execution, a data file
+ * must have been created and data must be stored in it, in a very
+ * specific format. For more info on the format of the data file,
+ * please have a look at the way FileManager class writes data reports
+ * to data files.
+ * <p>
+ * The class only serves for simple statistic measurements on the CRC
+ * algorithm execution and has nothing to do with the actual CRC
+ * algorithm. The main reason behind its development is the fact that
+ * the originally gathered data was pretty big in size (20 Million
+ * executions), so there were no easy way to calculate simple measurement
+ * in Microsoft Excel or similar software.
+ *
+ * @author Vasileios Papastergios
+ */
+public class StatisticalAnalyzer {
     private static int numberOfDistorted = 0;
     private static int numberOfDetected = 0;
     private static int numberOfNotDetected = 0;
