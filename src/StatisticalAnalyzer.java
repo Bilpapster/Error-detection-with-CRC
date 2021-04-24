@@ -14,11 +14,11 @@ import java.util.StringTokenizer;
  * to data files.
  * <p>
  * The class only serves for simple statistic measurements on the CRC
- * algorithm execution and has nothing to do with the actual CRC
- * algorithm. The main reason behind its development is the fact that
- * the originally gathered data was pretty big in size (20 Million
- * executions), so there were no easy way to calculate simple measurement
- * in Microsoft Excel or similar software.
+ * algorithm execution and has nothing to do with the actual implementation
+ * of the CRC algorithm. The main reason behind its development is the fact
+ * that the originally gathered data was pretty big in size (20 Million
+ * executions), so there was no easy way to calculate simple statistical
+ * measurements in Microsoft Excel or similar software.
  *
  * @author Vasileios Papastergios
  */
@@ -54,7 +54,7 @@ public class StatisticalAnalyzer {
             System.out.println("Number of not detected: " + numberOfNotDetected);
             System.out.println("Number of bath:         " + numberOfBath);
         } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
+            System.out.println("Data file not found.");
             e.printStackTrace();
         }
     }
