@@ -64,7 +64,7 @@ public class Message {
         BitSequence frameCheckSequence = calculateModulo2Division(divisor);
 
         /* appends the FCS at the end of the original message */
-        bitSequence.addWithoutBorrow(frameCheckSequence.setSeriesSize(numberOfFcsBits));
+        bitSequence.XOR(frameCheckSequence.setSeriesSize(numberOfFcsBits));
         return true;
     }
 
@@ -129,7 +129,7 @@ public class Message {
             }
 
             /* the remainder is updated as: remainder = remainder XOR P */
-            remainder.addWithoutBorrow(divisor);
+            remainder.XOR(divisor);
         }
 
         /* at the end of the while-loop, we have found the actual remainder of the division */

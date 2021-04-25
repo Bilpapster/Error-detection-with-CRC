@@ -134,7 +134,7 @@ public class BitSequence {
      * @param binaryNumber the String representation of the binary number to XOR
      *                     with the current one.
      */
-    public void addWithoutBorrow(String binaryNumber) {
+    public void XOR(String binaryNumber) {
         int thisIndex = sequence.length() - 1;
         int otherIndex = binaryNumber.length() - 1;
 
@@ -165,8 +165,8 @@ public class BitSequence {
      * @param bitSequence the bit sequence representation of the binary number to
      *                    XOR with the current one.
      */
-    public void addWithoutBorrow(BitSequence bitSequence) {
-        addWithoutBorrow(bitSequence.toString());
+    public void XOR(BitSequence bitSequence) {
+        XOR(bitSequence.toString());
     }
 
     /**

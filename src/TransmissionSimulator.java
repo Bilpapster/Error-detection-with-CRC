@@ -1,4 +1,4 @@
-public class Main {
+public class TransmissionSimulator {
 
     /* true: data gathering (to file), false: random message execution (to console) */
     private static final boolean dataGathering = false;
