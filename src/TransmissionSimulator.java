@@ -33,10 +33,10 @@ public class TransmissionSimulator {
         System.out.println("Message to transmit: " + message.getSequenceString());
 
         /* simulates the CRC execution and FCS appendix */
-        message.appendFrameCheckSequence(CRCDivisor);
+        message.appendFCS(CRCDivisor);
         System.out.println("After FCS appendix : " + message.getSequenceString());
 
-        /* simulates the transmission through a channel */
+        /* simulates the transmission via a noisy channel */
         message.transmit(bitErrorRate);
         System.out.println("After transmission : " + message.toString());
 
@@ -58,8 +58,8 @@ public class TransmissionSimulator {
      */
     private static void runDataGathering() {
         for (int i = 0; i < 20_000_000; i++) {
-            Message message = new Message(10);
-            message.appendFrameCheckSequence(CRCDivisor);
+            Message message = new Message(numberOfMessageBits);
+            message.appendFCS(CRCDivisor);
             message.transmit(bitErrorRate);
             FileManager.appendToDataFile(message, !message.receive(CRCDivisor));
         }

@@ -52,7 +52,7 @@ public class Message {
      * @param divisor the CRC divisor (number P, according to the wording).
      * @return true if FCS appendix is executed (divisor is valid), else false.
      */
-    public boolean appendFrameCheckSequence(String divisor) {
+    public boolean appendFCS(String divisor) {
         if (!checkCRCDivisorValidity(divisor)) return false;
 
         int numberOfFcsBits = divisor.length() - 1;

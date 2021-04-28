@@ -11,7 +11,7 @@ import java.io.IOException;
  * @author Vasileios Papastergios
  */
 public class FileManager {
-    private static final String dataFileName = "Data.csv";   // change the string literal for different data file
+    public static final String dataFileName = "Data.csv";   // change the string literal for different data file
 
     /**
      * Executes the file-writing procedure. The information written for a single transmission

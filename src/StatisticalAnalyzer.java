@@ -1,8 +1,8 @@
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.io.FileNotFoundException;
 
 /**
  * A small class that represents a pretty simple  statistical analyzer
@@ -23,6 +23,7 @@ import java.util.StringTokenizer;
  * @author Vasileios Papastergios
  */
 public class StatisticalAnalyzer {
+    private static int transmissionsInTotal = 0;
     private static int numberOfDistorted = 0;
     private static int numberOfDetected = 0;
     private static int numberOfNotDetected = 0;
@@ -30,9 +31,10 @@ public class StatisticalAnalyzer {
 
     public static void main(String[] args) {
         try {
-            File file = new File("Data.csv");
+            File file = new File(FileManager.dataFileName);
             Scanner fileReader = new Scanner(file);
             while (fileReader.hasNextLine()) {
+                transmissionsInTotal++;
                 ArrayList<StringBuilder> tokens = new ArrayList<>();
                 String line = fileReader.nextLine();
                 StringTokenizer stringTokenizer = new StringTokenizer(line, ",");
@@ -53,6 +55,7 @@ public class StatisticalAnalyzer {
             System.out.println("Number of detected:     " + numberOfDetected);
             System.out.println("Number of not detected: " + numberOfNotDetected);
             System.out.println("Number of bath:         " + numberOfBath);
+            System.out.println("Transmissions in total: " + transmissionsInTotal);
         } catch (FileNotFoundException e) {
             System.out.println("Data file not found.");
             e.printStackTrace();
