@@ -3,7 +3,7 @@ public class TransmissionSimulator {
     /* true: data gathering (to file), false: random message execution (to console) */
     private static final boolean dataGathering = false;
 
-    private static final int numberOfMessageBits = 10;   // number k (decimal), according to the wording
+    private static final int numberOfMessageBits = 20;   // number k (decimal), according to the wording
     private static final String CRCDivisor = "110101";   // number P (binary), according to the wording
     private static final double bitErrorRate = 1e-3;     // number E (decimal, 0 <= E <= 1), according to the wording
 
